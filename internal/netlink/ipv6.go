@@ -38,10 +38,11 @@ func (n *NetLink) FindIPv6SupportLevel() (level IPv6SupportLevel, err error) {
 		}
 		n.debugLogger.Debugf("Checking route (link %s): %#v", link.Name, route)
 
-		sourceIsIPv6 := route.Src.IsValid() && route.Src.Is6()
+		sourceIsIPv4 := route.Src.IsValid() && route.Src.Is4()
+		destinationIsIPv4 := route.Dst.IsValid() && route.Dst.Addr().Is4()
 		destinationIsIPv6 := route.Dst.IsValid() && route.Dst.Addr().Is6()
 		switch {
-		case !sourceIsIPv6 && !destinationIsIPv6,
+		case sourceIsIPv4 && destinationIsIPv4,
 			destinationIsIPv6 && route.Dst.Addr().IsLoopback():
 		case route.Dst.Addr().IsUnspecified(): // default ipv6 route
 			n.debugLogger.Debugf("IPv6 internet access is enabled on link %s", link.Name)
