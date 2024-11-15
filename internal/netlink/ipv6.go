@@ -36,6 +36,7 @@ func (n *NetLink) FindIPv6SupportLevel() (level IPv6SupportLevel, err error) {
 		if err != nil {
 			return IPv6Unsupported, fmt.Errorf("finding link corresponding to route: %w", err)
 		}
+		n.debugLogger.Debugf("Checking route (link %s): %#v", link.Name, route)
 
 		sourceIsIPv6 := route.Src.IsValid() && route.Src.Is6()
 		destinationIsIPv6 := route.Dst.IsValid() && route.Dst.Addr().Is6()
